@@ -54,7 +54,7 @@
       }
     }
     else {
-      for ( var prop in iterator) {
+      for ( var prop in collection) {
         iterator (collection[prop], prop, collection);
       }
     }
@@ -161,7 +161,7 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    if (!accumulator)
+    if (accumulator === undefined)
       accumulator = collection[0];
 
      _.each (collection, function (value){
@@ -197,7 +197,9 @@
     if (!collection.length)
       return false;
     // TIP: There's a very clever way to re-use every() here.
-    return _.every (collection, function ())
+    return _.reduce (collection, function (wasFound, value){
+      return (iterator == null) ? (!!value||wasFound) : (!!iterator(value)||wasFound);
+    }, false)
   };
 
 
